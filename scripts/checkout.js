@@ -1,4 +1,4 @@
-import { cart, removeFromCart } from "../data/cart.js";
+import { cart, removeFromCart, updateDeliveryOptions } from "../data/cart.js";
 import { products } from "../data/products.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
@@ -31,7 +31,7 @@ cart.forEach((cartItem) => {
   
 
   let dateString = deliveryDate.format("dddd, MMMM D");
-console.log(dateString)
+
   CartSummaryHTML += `
     <div class="cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
@@ -65,14 +65,14 @@ console.log(dateString)
                 <div class="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                ${deliveryOptionsHTML(productId, cartItem)}
+                ${deliveryOptionsHTML(matchingProduct, cartItem)}
               </div>
             </div>
           </div>
     `;
 });
 
-function deliveryOptionsHTML(productId, cartItem) {
+function deliveryOptionsHTML(matchingProduct, cartItem) {
   let html = "";
 
   deliveryOptions.forEach((deliveryOption) => {
@@ -87,11 +87,11 @@ function deliveryOptionsHTML(productId, cartItem) {
     let isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
     html += `
-    <div class="delivery-option">
+    <div class="delivery-option" data-product-id='${matchingProduct.id}' data-delivery-option-id="${deliveryOption.id}">
       <input type="radio" 
       ${isChecked ? "checked" : ""}
         class="delivery-option-input"
-        name="delivery-option-${productId}">
+        name="delivery-option-${matchingProduct.id}">
                   <div>
                     <div class="delivery-option-date">
                       ${dateString}
@@ -117,3 +117,13 @@ document.querySelectorAll(".delete-quantity-link").forEach((link) => {
     container.remove();
   });
 });
+
+
+document.querySelectorAll('.delivery-option').forEach((element) =>{
+  element.addEventListener('click', () =>{
+    let {productId,deliveryOptionId}=element.dataset
+
+    updateDeliveryOptions(productId,deliveryOptionId)
+  })
+
+})
