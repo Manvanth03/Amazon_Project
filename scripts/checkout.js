@@ -3,6 +3,8 @@ import { products } from "../data/products.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
 
+
+ function renderOrderSummary() {
 let CartSummaryHTML = "";
 
 cart.forEach((cartItem) => {
@@ -23,15 +25,14 @@ cart.forEach((cartItem) => {
     if (option.id === deliveryOptionId) {
       deliveryOption = option;
     }
-  
   });
 
   let today = dayjs();
   let deliveryDate = today.add(deliveryOption.deliveryDays, "days");
-  
 
   let dateString = deliveryDate.format("dddd, MMMM D");
 
+ 
   CartSummaryHTML += `
     <div class="cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
@@ -118,12 +119,14 @@ document.querySelectorAll(".delete-quantity-link").forEach((link) => {
   });
 });
 
+document.querySelectorAll(".delivery-option").forEach((element) => {
+  element.addEventListener("click", () => {
+    let { productId, deliveryOptionId } = element.dataset;
 
-document.querySelectorAll('.delivery-option').forEach((element) =>{
-  element.addEventListener('click', () =>{
-    let {productId,deliveryOptionId}=element.dataset
+    updateDeliveryOptions(productId, deliveryOptionId);
+    renderOrderSummary()
+  });
+});
+ }
 
-    updateDeliveryOptions(productId,deliveryOptionId)
-  })
-
-})
+ renderOrderSummary()
