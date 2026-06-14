@@ -26,7 +26,7 @@ cart.forEach((cartItem) => {
 
  
   CartSummaryHTML += `
-    <div class="cart-item-container-${matchingProduct.id}">
+    <div class="cart-item-container-${matchingProduct.id} js-cart-item-container" >
             <div class="delivery-date">
               Delivery date: ${dateString}
             </div>
@@ -41,14 +41,14 @@ cart.forEach((cartItem) => {
                 <div class="product-price">
                   Rs. ${matchingProduct.price}
                 </div>
-                <div class="product-quantity">
+                <div class="product-quantity product-quantity-${matchingProduct.id}">
                   <span>
                     Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                   </span>
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary" data-product-id="${matchingProduct.id}">
+                  <span class="delete-quantity-link link-primary delete-link-${matchingProduct.id}" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
                 </div>
